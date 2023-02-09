@@ -22,6 +22,28 @@ const initialState: CellsState = {
 const reducer = produce(
   (state: CellsState = initialState, action: Action): CellsState => {
     switch (action.type) {
+      case ActionType.SAVE_CELLS_ERROR:
+        state.error = action.payload;
+        return state;
+
+      case ActionType.FETCH_CELLS:
+        state.loading = true;
+        state.error = null;
+        return state;
+
+      case ActionType.FETCH_CELLS_COMPLETE:
+        state.order = action.payload.map((cell) => cell.id);
+        state.data = action.payload.reduce((acc, cell) => {
+          acc[cell.id] = cell;
+          return acc;
+        }, {} as CellsState["data"]);
+        return state;
+
+      case ActionType.FETCH_CELLS_ERROR:
+        state.loading = false;
+        state.error = action.payload;
+        return state;
+
       case ActionType.UPDATE_CELL:
         const { id, content } = action.payload;
         state.data[id].content = content;
@@ -42,6 +64,7 @@ const reducer = produce(
         state.order[index] = state.order[targetIndex];
         state.order[targetIndex] = action.payload.id;
         return state;
+
       case ActionType.INSERT_CELL_AFTER:
         const cell: Cell = {
           content: "",
@@ -58,6 +81,7 @@ const reducer = produce(
           state.order.splice(foundIndex + 1, 0, cell.id);
         }
         return state;
+
       default:
         return state;
     }
