@@ -1,0 +1,11 @@
+.top-menu {
+  display: flex;
+  justify-content: center;
+  padding: 25px;
+  background-color: #011427;
+  align-items: center;
+}
+
+.top-menu > * {
+  margin-inline: 10px;
+}

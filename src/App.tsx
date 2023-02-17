@@ -1,56 +1,19 @@
-import * as esbuild from "esbuild-wasm";
-import React, { useEffect, useRef, useState } from "react";
+import "bulmaswatch/superhero/bulmaswatch.min.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./App.css";
-import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
-import { fetchPlugin } from "./plugins/fetch-plugin";
+import { Provider } from "react-redux";
+import { store } from "./state";
+import CellList from "./components/cell-list";
+import { TopMenu } from "./components/top-menu";
 
 function App() {
-  const ref = useRef<any>();
-  const [input, setInput] = useState("import 'bulma/css/bulma.css';");
-  const [code, setCode] = useState("");
-
-  async function startService() {
-    ref.current = await esbuild.startService({
-      worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm",
-    });
-    // console.log(service);
-  }
-
-  useEffect(() => {
-    startService();
-  }, []);
-
-  async function onClick() {
-    if (!ref.current) {
-      return;
-    }
-    const result = await ref.current.build({
-      entryPoints: ["index.js"],
-      bundle: true,
-      write: false,
-      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
-      define: {
-        "process.env.NODE_ENV": "'production'",
-        global: "window",
-      },
-    });
-
-    console.log(result);
-    setCode(result.outputFiles[0].text);
-  }
-
   return (
-    <div>
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      ></textarea>
+    <Provider store={store}>
       <div>
-        <button onClick={onClick}>Submit</button>
+        <TopMenu />
+        <CellList />
       </div>
-      <pre>{code}</pre>
-    </div>
+    </Provider>
   );
 }
 
