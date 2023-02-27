@@ -14,4 +14,7 @@ export enum ActionType {
   EXPORT_BOOK = "export_book",
   EXPORT_BOOK_SUCCESS = "export_book_success",
   EXPORT_BOOK_ERROR = "export_book_error",
+  IMPORT_BOOK = "import_book",
+  IMPORT_BOOK_COMPLETE = "import_book_complete",
+  IMPORT_BOOK_ERROR = "import_book_error",
 }

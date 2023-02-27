@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useActions } from "../hooks/use-actions";
 import { useTypedSelector } from "../hooks/use-typed-selector";
+import BookImporter from "./book-importer";
 import "./top-menu.css";
 
 export const TopMenu = () => {
@@ -9,6 +10,7 @@ export const TopMenu = () => {
     return title;
   });
   const [title, setTitle] = useState<string>(initialTitle);
+  const [isImporting, setIsImporting] = useState<Boolean>(false);
 
   const handleExport = () => {
     exportCells();
@@ -17,7 +19,6 @@ export const TopMenu = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       updateTitle(title);
-      console.log("updated title");
     }, 1000);
     return () => {
       clearTimeout(timer);
@@ -46,6 +47,13 @@ export const TopMenu = () => {
       >
         Save Book
       </button>
+      <button
+        className="button is-rounded is-primary is-small"
+        onClick={setIsImporting.bind(null, !isImporting)}
+      >
+        Load Book
+      </button>
+      {isImporting ? <BookImporter /> : ""}
     </div>
   );
 };

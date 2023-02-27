@@ -18,9 +18,11 @@ const reducer = produce(
   (state: FileState = initialFileState, action: Action): FileState => {
     switch (action.type) {
       case ActionType.EXPORT_BOOK:
-        break;
+        return state;
+
+      default:
+        return state;
     }
-    return state;
   },
   initialFileState
 );

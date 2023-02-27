@@ -91,6 +91,20 @@ export interface UpdateTitleAction {
   payload: string;
 }
 
+export interface ImportBookAction {
+  type: ActionType.IMPORT_BOOK;
+}
+
+export interface ImportBookCompleteAction {
+  type: ActionType.IMPORT_BOOK_COMPLETE;
+  payload: { order: string[]; data: { [key: string]: Cell }; title: string };
+}
+
+export interface ImportBookErrorAction {
+  type: ActionType.IMPORT_BOOK_ERROR;
+  payload: string;
+}
+
 export type Action =
   | MoveCellAction
   | DeleteCellAction
@@ -106,4 +120,7 @@ export type Action =
   | ExportBookAction
   | ExportBookSuccess
   | ExportBookError
-  | UpdateTitleAction;
+  | UpdateTitleAction
+  | ImportBookAction
+  | ImportBookCompleteAction
+  | ImportBookErrorAction;

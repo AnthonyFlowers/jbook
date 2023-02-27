@@ -58,18 +58,33 @@ export const saveCells = () => {
 
 export const exportCells = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log("saving");
     const { cells } = getState();
     const stringifiedBook = JSON.stringify(cells, null, 2);
     const fileStream = fs.createWriteStream(`${cells.title}.book`);
     new Response(stringifiedBook).body
       ?.pipeTo(fileStream)
-      .then((success) => {
+      .then(() => {
         console.log("saved");
         dispatch({ type: ActionType.EXPORT_BOOK_SUCCESS });
       })
       .catch((err) => {
         dispatch({ type: ActionType.EXPORT_BOOK_ERROR, payload: err });
       });
+  };
+};
+
+export const importCells = (cells: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.IMPORT_BOOK });
+    const { data, order, title } = JSON.parse(cells);
+    if (data && order && title) {
+      let item = { data, order, title };
+      dispatch({ type: ActionType.IMPORT_BOOK_COMPLETE, payload: item });
+    } else {
+      dispatch({
+        type: ActionType.IMPORT_BOOK_ERROR,
+        payload: "Couldn't load that book",
+      });
+    }
   };
 };

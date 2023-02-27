@@ -86,6 +86,21 @@ const reducer = produce(
         state.title = action.payload;
         return state;
 
+      case ActionType.IMPORT_BOOK:
+        state.loading = true;
+        return state;
+
+      case ActionType.IMPORT_BOOK_COMPLETE:
+        state.order = action.payload.order;
+        state.data = action.payload.data;
+        state.title = action.payload.title;
+        state.loading = false;
+        return state;
+
+      case ActionType.IMPORT_BOOK_ERROR:
+        state.error = action.payload;
+        return state;
+
       default:
         return state;
     }
